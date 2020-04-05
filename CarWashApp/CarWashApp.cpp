@@ -1,7 +1,10 @@
 /* 
 Lydia Pierce
 Intro to Data Structures
-CarWashApp.cpp : This file contains the 'main' function. Program execution begins and ends there.
+CarWashApp.cpp : This program simulates a car wash. The user inputs the number of hours to run the simulation
+and the probability a car comes off the road. Cars come off the road at random times to join the line.
+If the car wash is open, cars waiting in the line go in the wash, and it takes 3 minutes to finish the wash.
+The program returns the number of washed cars, the average wait time, and the number of cars left in line at the end.
 4/5/2020
 */
 
@@ -32,6 +35,7 @@ int main()
 	int entrytime;
 	SimpleList s1;
 
+	cout << "Welcome to the Car Wash Simulator 3000!" << endl << endl;
 	cout << "How many hours would you like to simulate?\n";
 	cout << "Enter an integer: ";
 	cin >> _hours;
@@ -80,7 +84,8 @@ int main()
 	}
 	AvgWaitTime = TotalWaitTime / nWashedCars;
 	cout << "The total numbers of cars washed was: " << nWashedCars << endl;
-	cout << "The average wait time of a car that went into the wash was: " << AvgWaitTime << " second(s)" << endl;
+	cout << "The average wait time of a car that went into the wash was: " << AvgWaitTime
+		<< " second(s) or " << AvgWaitTime/60 << " minute(s)" << endl;
 	cout << "The number of cars left in line at the close of the simulation: " << CarsinQueue << endl;
 }
 
