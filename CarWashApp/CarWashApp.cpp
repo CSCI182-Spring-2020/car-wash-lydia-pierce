@@ -69,14 +69,14 @@ int main()
 					CarsinQueue--;
 					nWashedCars++;
 					IsCarWashOpen = false;
-					WashStartTime = entrytime;
+					WashStartTime = 0;
 				}
 			}
 			if (IsCarWashOpen == false)
 			{
-				if (WashStartTime % (WASH_TIME * 60) == 0 && j != 0)
-					IsCarWashOpen = true;
 				WashStartTime++;
+				if (WashStartTime % (WASH_TIME * 60) == 0)
+					IsCarWashOpen = true;
 			}
 		
 		// Increase the counter by 1 second
