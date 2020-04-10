@@ -4,6 +4,12 @@
 
 using namespace std;
 
+struct EmptyListException : public exception {
+	const char* what() const throw() {
+		return "Error: the queue is empty.";
+	}
+};
+
 /// <summary>
 /// Destructor
 /// </summary>
@@ -33,7 +39,7 @@ void SimpleList::QueueItem(int newValue)
 		_tail->next = temp;
 		_tail = temp;
 	}
-	
+
 	//cout << "Queued Item" << endl;
 }
 
@@ -41,7 +47,7 @@ int SimpleList::DequeueItem()
 {
 	// Is empty?
 	if (_head == NULL)
-		return -1;
+		throw EmptyListException();
 
 	Node* temp = _head;
 	_head = temp->next;
@@ -52,7 +58,6 @@ int SimpleList::DequeueItem()
 		_tail == NULL;
 
 	int nReturn = temp->value;
-	//delete temp;
 
 	//cout << "Dequeued node" << endl;
 	return nReturn;
@@ -61,7 +66,7 @@ int SimpleList::DequeueItem()
 void SimpleList::DisplayList()
 {
 	if (_head == NULL)
-		return;
+		throw EmptyListException();;
 	Node* temp;
 	temp = _head;
 	while (1)
@@ -71,7 +76,6 @@ void SimpleList::DisplayList()
 			return;
 		temp = temp->next;
 	}
-	//delete temp;
 }
 
 void SimpleList::Push(int value)
@@ -85,8 +89,6 @@ void SimpleList::Push(int value)
 		_head->next = temp;
 	_head = temp;
 
-	//delete temp;
-
 	cout << "Pushed Item" << endl;
 }
 
@@ -94,7 +96,7 @@ int SimpleList::Pop()
 {
 	// Is empty?
 	if (_head == NULL)
-		return -1;
+		throw EmptyListException();
 
 	Node* temp = _head;
 	_head = temp->next;

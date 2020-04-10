@@ -17,8 +17,15 @@ The program returns the number of washed cars, the average wait time, and the nu
 
 using namespace std;
 
+struct UserInputException : public exception {
+	const char* what() const throw() {
+		return "Invalid entry.";
+	}
+};
+
 int main()
 {
+	try{
 	// Seed the random generator (near the top)
 	srand(time(NULL));
 
@@ -39,9 +46,13 @@ int main()
 	cout << "How many hours would you like to simulate?\n";
 	cout << "Enter an integer: ";
 	cin >> _hours;
+	if (!cin)
+		throw UserInputException();
 	cout << "What is the probability of a car showing up at any minute?\n";
 	cout << "Enter an integer 1-100: ";
 	cin >> nSimCarProbPercentage;
+	if (!cin || nSimCarProbPercentage < 1 || nSimCarProbPercentage > 100)
+		throw UserInputException();
 
 
 	// A counter for the hours the simulation will run
@@ -69,24 +80,41 @@ int main()
 					CarsinQueue--;
 					nWashedCars++;
 					IsCarWashOpen = false;
-					WashStartTime = entrytime;
+					WashStartTime = 0;
 				}
 			}
 			if (IsCarWashOpen == false)
 			{
-				if (WashStartTime % (WASH_TIME * 60) == 0 && j != 0)
-					IsCarWashOpen = true;
 				WashStartTime++;
+				if (WashStartTime % (WASH_TIME * 60) == 0)
+					IsCarWashOpen = true;
 			}
 		
 		// Increase the counter by 1 second
 		j++;
 	}
-	AvgWaitTime = TotalWaitTime / nWashedCars;
+
+	if (nWashedCars == 0)
+		throw exception("No cars went in the wash");
+
+		AvgWaitTime = TotalWaitTime / nWashedCars;
 	cout << "The total numbers of cars washed was: " << nWashedCars << endl;
 	cout << "The average wait time of a car that went into the wash was: " << AvgWaitTime
 		<< " second(s) or " << AvgWaitTime/60 << " minute(s)" << endl;
 	cout << "The number of cars left in line at the close of the simulation: " << CarsinQueue << endl;
+	}
+	catch (UserInputException & ex)
+	{
+		cout << "User Input Error found: " << ex.what() << endl;
+	}
+	catch (exception & ex)
+	{
+		cout << "Error found: " << ex.what() << endl;
+	}
+	catch (...)
+	{
+		cout << "REALLY bad error" << endl;
+	}
 }
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu
